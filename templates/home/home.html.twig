@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block header %}
+    <header class="masthead bg-primary text-center text-white mh-100 image-bg"
+            style="background-image: url(include/assets/img/lace-sport-wood-smiling-fun.jpg);background-position: center;"
+            id="tricks">
+        <div class="container d-flex align-items-center flex-column bg-white col mx-auto">
+            <!-- Masthead Subheading-->
+            <h3 style="font-size:60px; color:chocolate;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">
+                SnowTricks
+            </h3>
+            <p class="masthead-subheading mb-0 mt-3"
+               style="font-size:20px; color:black ;text-shadow: 1px 2px 5px white; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">
+                Le snowboard sous toutes ses formes.
+            </p>
+        </div>
+        <a class="float-end me-5 mt-5" href="#home" style="padding-top: 200px;">
+            <i class="fa-solid fa-arrow-down fa-2x text-white"></i>
+        </a>
+    </header>
+    <script>
+        function redimensionnement() {
+            var $image = $('.image-bg');
+            var image_width = $image.width();
+            var image_height = $image.height();
+        }
+    </script>
+{% endblock %}
+{% block body %}
+    <body>
+        <div id="home">
+            {% include "home/list_tricks.html.twig" %}
+        </div>
+    </body>
+{% endblock %}
