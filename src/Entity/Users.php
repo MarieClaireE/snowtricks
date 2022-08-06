@@ -14,17 +14,29 @@ class Users
     #[ORM\Column()]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
+    private ?string $email = null;
 
-    #[ORM\Column]
-    private ?int $type = null;
+    #[ORM\Column(length: 20)]
+    private ?string $password = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $slug = null;
+    #[ORM\Column(length: 255)]
+    private ?string $tokenNewPassword = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateNewPassword = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $expireTokenNewPassword = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tokenNewUser = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?DateTimeInterface $dateTokenNewUser = null;
 
     public function getId(): ?int
     {
@@ -43,38 +55,86 @@ class Users
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getEmail(): ?string
     {
-        return $this->description;
+        return $this->email;
     }
 
-    public function setDescription(string $description): self
+    public function setEmail(string $email): self
     {
-        $this->description = $description;
+        $this->email = $email;
 
         return $this;
     }
 
-    public function getType(): ?int
+    public function getPassword(): ?string
     {
-        return $this->type;
+        return $this->password;
     }
 
-    public function setType(int $type): self
+    public function setPassword(string $password): self
     {
-        $this->type = $type;
+        $this->password = $password;
 
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getTokenNewPassword(): ?string
     {
-        return $this->slug;
+        return $this->tokenNewPassword;
     }
 
-    public function setSlug(string $slug): self
+    public function setTokenNewPassword(string $tokenNewPassword): self
     {
-        $this->slug = $slug;
+        $this->tokenNewPassword = $tokenNewPassword;
+
+        return $this;
+    }
+
+    public function getDateNewPassword(): ?\DateTimeInterface
+    {
+        return $this->dateNewPassword;
+    }
+
+    public function setDateNewPassword(\DateTimeInterface $dateNewPassword): self
+    {
+        $this->dateNewPassword = $dateNewPassword;
+
+        return $this;
+    }
+
+    public function getExpireTokenNewPassword(): ?\DateTimeInterface
+    {
+        return $this->expireTokenNewPassword;
+    }
+
+    public function setExpireTokenNewPassword(\DateTimeInterface $expireTokenNewPassword): self
+    {
+        $this->expireTokenNewPassword = $expireTokenNewPassword;
+
+        return $this;
+    }
+
+    public function getTokenNewUser(): ?string
+    {
+        return $this->tokenNewUser;
+    }
+
+    public function setTokenNewUser(string $tokenNewUser): self
+    {
+        $this->tokenNewUser = $tokenNewUser;
+
+        return $this;
+    }
+
+    public function getDateTokenNewUser(): ?\DateTimeInterface
+    {
+        return $this->dateTokenNewUser;
+    }
+
+    public function setDateTokenNewUser(\DateTimeInterface $dateTokenNewUser): self
+    {
+        $this->dateTokenNewUser = $dateTokenNewUser;
 
         return $this;
     }

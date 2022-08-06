@@ -13,7 +13,7 @@ class HomeController extends AbstractController {
     /**
      *  @var Environment
      */
-    private $twig; 
+    private $twig;
 
     public function __construct(Environment $twig)
     {
@@ -26,7 +26,11 @@ class HomeController extends AbstractController {
      */
     public function index(): Response
     {
-        return new Response($this->twig->render('home/home.html.twig'));
+        $route = __DIR__;
+        return new Response($this->twig->render('home/home.html.twig',
+        [
+            'route' => $route
+        ]));
     }
 
     /**
