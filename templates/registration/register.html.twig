@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="col-12" style="margin-top: 110px;">
+
+        {% for flash_error in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
+
+        <h1 class="text-center">S'inscrire</h1>
+
+
+        <div class="row">
+            {{ form_start(registrationForm) }}
+
+                <div class="col-5 mx-auto">
+                    {{ form_row(registrationForm.email, {'attr': {'class': 'form-control'} }) }}
+                </div>
+                <div class="col-5 mx-auto">
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Mot de passe',
+                        'attr': {'class' : 'form-control'}
+                    }) }}
+                </div>
+                <div class="col-5 mx-auto">
+                    {{ form_row(registrationForm.agreeTerms, {
+                        'attr': {'class': 'form-check' },
+                        label: 'Accepter les conditions'
+                    }) }}
+                </div>
+                <div class="col-5 mx-auto mb-4 text-center">
+                    <button type="submit" class="btn btn-lg btn-primary">Enregistrer</button>
+                </div>
+            {{ form_end(registrationForm) }}
+        </div>
+
+
+
+    </div>
+
+{% endblock %}
