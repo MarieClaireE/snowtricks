@@ -1,0 +1,75 @@
+<style>
+    .image-bg{
+        background-image: url({{ asset('assets/assets/img/lace-sport-wood-smiling-fun.jpg') }});
+        display: block;
+        margin: 0px auto;
+        height: 980px;
+    }
+    .arrow-down {
+        color: chocolate;
+        margin-right: 30px;
+        border: 1px solid chocolate;
+        border-radius: 10px;
+        padding: 5px;
+        margin-top: 450px;
+        font-size: 40px;
+        width: 60px;
+        font-weight: bold;
+    }
+    .arrow-down:hover{
+        color: white;
+        border: 1px solid white;
+    }
+    .h3-title {
+        font-size:70px;
+        color:chocolate;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    .text-title {
+        font-size:30px;
+        color:black ;
+        text-shadow: 1px 2px 5px white;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    @media (max-height: 700px){
+        .image-bg{
+            height: 625px;
+            margin-top: 10px;
+            background-position: center;
+        }
+        .arrow-down {
+            margin-top: 70px;
+        }
+    }
+    @media (max-width: 420px) {
+        .image-bg{
+            height: 750px;
+            background-position: center center;
+        }
+        .arrow-down {
+            margin-top: 5px;
+        }
+        .h3-title {
+            font-size:40px;
+        }
+        .text-title {
+            font-size:20px;
+        }
+    }
+
+</style>
+<header class="masthead bg-primary text-center text-white image-bg" id="home">
+    <div class="container d-flex align-items-center flex-column col-4 py-5"
+    <!-- Masthead Subheading-->
+    <h3 class="h3-title">
+        SnowTricks
+    </h3>
+    <p class="masthead-subheading mb-0 text-title">
+        Le snowboard sous toutes ses formes.
+    </p>
+    </div>
+    <a class="float-end arrow-down" href="#tricks">
+        <i class="fa-solid fa-arrow-down"></i>
+    </a>
+</header>

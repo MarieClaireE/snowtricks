@@ -1,20 +1,18 @@
 <?php
+
 namespace App\Controller;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-
-class UsersController extends AbstractController
+class FigureController extends AbstractController
 {
     /**
-     * @var Environment
+     *  @var Environment
      */
     private $twig;
-
 
     public function __construct(Environment $twig)
     {
@@ -22,11 +20,11 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @return Response
-     * @Route("signIn/", name="signIn")
+     * @Route("/create/trick", name="create_trick")
      */
-    public function signIn(): Response {
-
-        return new Response($this->twig->render('users/signIn.html.twig'));
+    public function createTricks(): Response
+    {
+        return new Response($this->twig->render('tricks/new_tricks.html.twig'));
     }
+
 }

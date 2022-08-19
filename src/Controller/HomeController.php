@@ -27,8 +27,11 @@ class HomeController extends AbstractController {
     public function index(): Response
     {
         $route = __DIR__;
+        $isConnect = $this->getUser();
+
         return new Response($this->twig->render('home/home.html.twig',
         [
+            'isConnect' => $isConnect,
             'route' => $route
         ]));
     }
@@ -41,4 +44,5 @@ class HomeController extends AbstractController {
     {
         return new Response($this->twig->render('home/list_tricks.html.twig'));
     }
+
 }
