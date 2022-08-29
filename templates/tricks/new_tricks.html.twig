@@ -1,0 +1,96 @@
+{% extends "base.html.twig" %}
+
+{% block header %}
+    <style>
+        .block-header {
+            margin-top: 110px;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .title-file {
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+    </style>
+
+    <div class="col-12 h3 block-header text-center">
+        Ajouter une nouvelle figure
+    </div>
+{% endblock %}
+{% block body %}
+    <div class="col-12">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                {{ form_start(formTricks) }}
+                    {{ form_widget(formTricks.name, {
+                        'attr': {'class' : 'form-control mb-1 mt-2', 'placeholder': 'Nom de la figure'}
+                    }) }}
+                    {{ form_widget(formTricks.description, {
+                        'attr': {'cols': '100', 'rows': '10', 'class': 'form-control mb-1' }
+                    })  }}
+                    <div class="mb-2 border rounded px-1 py-1">
+                        <h6 class="text-muted title-file">Sélection de l'/des image(s) : </h6>
+                        <div class="row">
+                            <div class="col-4">
+                                {{ form_widget(formTricks.images, {
+                                    'attr': {'class': 'form-control'}
+                                }) }}
+                            </div>
+                            <div class="col-4">
+                                {{ form_widget(formTricks.images2, {
+                                    'attr': {'class': 'form-control'}
+                                }) }}
+                            </div>
+                            <div class="col-4">
+                                {{ form_widget(formTricks.images3, {
+                                    'attr': {'class': 'form-control'}
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2 border rounded px-1 py-1">
+                        <h6 class="text-muted title-file">Sélection de la/des vidéo(s) : </h6>
+                        <div class="row">
+                            <div class="col-4">
+                                {{ form_widget(formTricks.videos, {
+                                    'attr': {'class': 'form-control'}
+                                }) }}
+                            </div>
+                            <div class="col-4">
+                                {{ form_widget(formTricks.videos2, {
+                                    'attr': {'class': 'form-control'}
+                                }) }}
+                            </div>
+                            <div class="col-4">
+                                {{ form_widget(formTricks.videos3, {
+                                    'attr': {'class': 'form-control'}
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="submit" name="newTricks" value="Enregistrer" class="btn btn-primary col-12 mb-3">
+                {{ form_end(formTricks) }}
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success float-end">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+<script>
+    function addImages() {
+        var field = '<input type="file" name="tricks_form[images]" accept="image/jpeg, image/png" class="mb-1">';
+        document.getElementById('cibleImage').innerHTML += field;
+    }
+    function addVideos() {
+        var field = '<input type="file" name="photo" accept="video/*" class="mb-1">';
+        document.getElementById('cibleVideo').innerHTML += field;
+    }
+</script>
+{% endblock %}

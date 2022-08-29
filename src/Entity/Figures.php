@@ -11,6 +11,14 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: FiguresRepository::class)]
 class Figures
 {
+		const GRABS = 1;
+		const ROTATIONS = 2;
+		const FLIPS = 3;
+		const ROTAION_DESAXES = 4;
+		const SLIDES = 5;
+		const ONE_FOOT_TRICKS = 6;
+		const OLD_SCHOOL = 7;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column()]
@@ -28,16 +36,28 @@ class Figures
     #[ORM\Column(type: Types::TEXT)]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Images::class)]
-    private Collection $images;
+		///**
+		// * @ORM\OneToMany(targetEntity="Images::class", mappedBy="figure", cascade={"persist"})
+		//*/
+    // private Collection $images;
 
-    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Videos::class)]
+		#[ORM\Column(type: Types::ARRAY)]
+		private ?array $images;
+
+		#[ORM\Column(type: Types::ARRAY)]
+		private ?array $videos;
+    /*
+		/**
+		 * @ORM\OneToMany(targetEntity="Videos::class", mappedBy="figure", cascade={"persist"})
+		 */
+		/*
     private Collection $videos;
+		*/
 
     public function __construct()
     {
-        $this->images = new ArrayCollection();
-        $this->videos = new ArrayCollection();
+        //$this->images = new ArrayCollection();
+        //$this->videos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,63 +113,37 @@ class Figures
         return $this;
     }
 
-    /**
-     * @return Collection<int, Images>
-     */
-    public function getImages(): Collection
-    {
-        return $this->images;
-    }
+		/**
+		 * @return array|null
+		 */
+		public function getImages(): ?array
+		{
+			return $this->images;
+		}
 
-    public function addImage(Images $image): self
-    {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setFigure($this);
-        }
+		/**
+		 * @param array|null $images
+		 */
+		public function setImages(?array $images): void
+		{
+			$this->images = $images;
+		}
 
-        return $this;
-    }
 
-    public function removeImage(Images $image): self
-    {
-        if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getFigure() === $this) {
-                $image->setFigure(null);
-            }
-        }
+		/**
+		 * @return array|null
+		 */
+		public function getVideos(): ?array
+		{
+			return $this->videos;
+		}
 
-        return $this;
-    }
+		/**
+	 * @param array|null $videos
+	 */
+		public function setVideos(?array $videos): void
+		{
+			$this->videos = $videos;
+		}
 
-    /**
-     * @return Collection<int, Videos>
-     */
-    public function getVideos(): Collection
-    {
-        return $this->videos;
-    }
-
-    public function addVideo(Videos $video): self
-    {
-        if (!$this->videos->contains($video)) {
-            $this->videos[] = $video;
-            $video->setFigure($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVideo(Videos $video): self
-    {
-        if ($this->videos->removeElement($video)) {
-            // set the owning side to null (unless already changed)
-            if ($video->getFigure() === $this) {
-                $video->setFigure(null);
-            }
-        }
-
-        return $this;
-    }
 }
