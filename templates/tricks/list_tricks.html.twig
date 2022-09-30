@@ -1,53 +1,153 @@
 
 {% block section %}
+    <style>
+        .hidden{
+            display: none;
+        }
+        .active{
+            display: block;
+        }
+        ul {
+            column-count: 4;
+        }
+        li {
+            display: inline;
+        }
+        .div-figure{
+            max-height: 230px;
+            min-height: 200px;
+        }
+        .div-button{
+            position: center;
+            bottom: 5px;
+        }
+    </style>
     <!-- Portfolio Section-->
    <section class="page-section tricks mb-4">
        <div class="row">
-           <div class="col-12">
-               <div class="row ">
-                   <div class="col-10"></div>
-                   <div class="col-2 me-0">
+           <div class="col me-4">
+               {% for message in app.flashes('success') %}
+                   <div class="alert alert-success float-end me-4">
+                       {{ message }}
+                   </div>
+               {% endfor %}
+           </div>
+       </div>
+       <div class="row">
+           <div class="col-11 mx-auto">
+                   <div class="col-2 float-end">
                        {% if isConnect %}
-                           <a href="{{ path('create_trick') }}" class="btn btn-url btn-secondary" >
+                           <a href="{{ path('edit_figure') }}" class="btn btn-url btn-secondary" >
                                <i class="fa-solid fa-plus"></i>
                                Nouvelle figure
                            </a>
                        {% endif %}
                    </div>
-               </div>
            </div>
        </div>
-        <div class="row">
-            <div class="content" style="height: 200px;overflow: hidden;" >
-                <div class="container" id="top">
-                    <div class="row g-2">
-                        <div class="col-3 content-tricks">
-                            <div class="p-3 border bg-light" id="id-figure">
-                                Image figure <br>
-                                titre figure <br>
-
-                                {% if isConnect %}
-                                    <i class="fa-solid fa-pen"></i>
-                                    <i class="fa-solid fa-trash"></i>
+       <div class="row mt-4">
+           <hr class="col-10 mx-auto" id="top">
+           <div class="col-10 mx-auto " >
+               <div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-1 mb-2" id="listTricks">
+                   {% for trick in tricks %}
+                        {% set hidden = loop.index > 4 ? 'hidden' : 'active' %}
+                       <div class="mini-container col {{ hidden }}">
+                           <div class="card p-3  mb-1 div-figure">
+                               <div class="card-header bg-white">
+                                {% if trick.photoPresentation is not null %}
+                                    <img src="{{ asset('uploads/') }}{{ trick.photoPresentation }}" width="50%"
+                                    style="display:block; margin:0px auto;">
+                                {% else %}
+                                    {% if photos is not empty %}
+                                        {% for key, photo in photos %}
+                                            {% for name in photo %}
+                                                {% if key == trick.id %}
+                                                    {% if loop.index == 1 %}
+                                                        <img src="{{ asset('uploads/') }}{{ name }}" width="60%"
+                                                         style="display:block; margin:0px auto;">
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {% endif %}
                                 {% endif %}
-                            </div>
-                        </div>
-                    </div>
+                               </div>
+                               <div class="card-body bg-white mb-1 py-0 position-relative">
+                                   {% if isConnect %}
+                                       <div class="float-end">
+                                           <a class="btn btn-url btn-sm py-0 px-0"
+                                              href="{{ path('edit_figure', {id:trick.id}) }}">
+                                               <i class="fa fa-pen"></i>
+                                           </a>
+                                           <a href="{{ path('figure_remove',  {id:trick.id}) }}" class="btn btn-url btn-sm py-0 px-0"
+                                              onclick="return confirm('Es-tu sûr de vouloir supprimer \'{{ trick.name }}\' ? ')">
+                                               <i class="fa fa-trash"></i>
+                                           </a>
+                                       </div>
+                                   {% endif %}
+                                    <div class="div-button">
+                                       <p class="mt-2 mb-0">
+                                           <a class="btn btn-url btn-sm btn-outline-primary"
+                                              href="{{ path('trick', {trickId: trick.id, trickslug: trick.slug}) }}">
+                                               {{ trick.name }}
+                                           </a>
+                                       </p>
+                                    </div>
+                               </div>
+                           </div>
+                       </div>
+                   {% endfor %}
+               </div>
+               <div class="row">
+                       <a href="#moreButton" id="moreButton" class="btn btn-dark rounded-pill col-1 mx-auto" onclick="showMore()">
+                           <i class="fa fa-plus"></i>
+                       </a>
+               </div>
+
+           </div>
+            <div class="row">
+                <div class="text-center mt-lg-5">
+                    <a class="float-end me-5 " href="#top">
+                        <i class="fa-solid fa-arrow-up text-black fa-2x"></i>
+                    </a>
                 </div>
             </div>
-            <div class="text-center mt-lg-5 loadMore">
-                <a href="#" id="loadMore" class="btn btn-primary">
-                    <i class="icone fa-solid fa-plus"></i>
-                    Voir plus
-                </a>
-                <a class="float-end me-5" href="#top">
-                    <i class="fa-solid fa-arrow-up text-black fa-2x"></i>
-                </a>
-            </div>
-        </div>
+       </div>
     </section>
+    <script langage="JavaScript" class="text/javascript">
+
+            function showMore() {
+                var listTricks =
+                Array.prototype.slice.call(document.querySelectorAll(
+                        '#listTricks .mini-container:not(.active)')).slice(0,4);
+
+                for (var i=0; i < listTricks.length; i++) {
+                    listTricks[i].className = 'active';
+                }
+
+                switchButton();
+            }
+
+            function switchButton() {
+                var hiddenElements = Array.prototype.slice.call(
+                    document.querySelectorAll(
+                        '#listTricks .mini-container:not(.active)'));
+                if(hiddenElements.length == 0) {
+                    document.getElementById('moreButton').style.display = 'none';
+                } else {
+                    document.getElementById('moreButton').style.display = 'block';
+                }
+
+                var activeElements = Array.prototype.slice.call(document.querySelectorAll(
+                    '#listTricks .mini-container:not(.hidden)'
+                ));
+
+                onload = function () {
+                    showMore();
+                };
+            }
+
+
+    </script>
 {% endblock %}
-<script langage="JavaScript" class="text/javascript">
 
-
-</script>

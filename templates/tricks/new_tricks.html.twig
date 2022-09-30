@@ -12,7 +12,11 @@
     </style>
 
     <div class="col-12 h3 block-header text-center">
-        Ajouter une nouvelle figure
+        {% if figure.id is null %}
+            Ajouter une nouvelle figure
+        {% else %}
+            Modifier {{ figure.name }}
+        {% endif %}
     </div>
 {% endblock %}
 {% block body %}
@@ -20,77 +24,126 @@
         <div class="row">
             <div class="col-10 mx-auto">
                 {{ form_start(formTricks) }}
+                    <div class="row">
+                        <div class="col-5 mx-auto">
+                            <div class="row">
+                                <img src="{{ asset('uploads/') }}{{ figure.photoPresentation }}" width="100%">
+                                {{ form_widget(formTricks.photoPresentation, {
+                                    'attr': {'class': 'form-control'}
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
                     {{ form_widget(formTricks.name, {
                         'attr': {'class' : 'form-control mb-1 mt-2', 'placeholder': 'Nom de la figure'}
                     }) }}
+                    <div class="row flex-row mx-auto">
+                        <div class="mb-2 border rounded px-1 py-1 col">
+                            <h6 class="text-muted title-file">Sélection de la/des vidéo(s) : </h6>
+                            {% if videos is not empty %}
+                                <div class="row flex-row flew-nowrap" style="overflow:auto;">
+                                    {% for video in videos %}
+                                        <div class="col-3">
+                                            <div class="card me-2 border-0">
+                                                <a href="{{ path('edit_figure', {id: figure.id}) }}" class="btn"
+                                                   type="button" data-bs-toggle="modal" data-bs-target="#modalVideo-{{ video.id }}">
+                                                    <video controls width="200px" height="120px">
+                                                        <source src="{{ asset('uploads/') }}{{ video.name }}">
+                                                    </video>
+                                                </a>
+                                                <!-- modal -->
+                                                <div class="modal fade" id="modalVideo-{{ video.id }}"
+                                                     data-bs-backdrop="static"
+                                                     data-bs-keyboard="false"
+                                                     tabindex="-1"
+                                                     aria-labelledby="staticBackdropLabel"
+                                                     aria-hidden="true"
+                                                >
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                <a href="{{ path('delete_video', { id:video.id }) }}"
+                                                                   class="btn btn-url btn-sm py-0 px-0
+                                                                    float-end"
+                                                                   onclick="return confirm('Es-tu sûr de vouloir supprimer \'{{ video.name }}\' ? ')">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </a>
+
+                                                                <video controls width="450px" height="250px">
+                                                                    <source src="{{ asset('uploads/') }}{{ video.name }}">
+                                                                </video>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form_widget(formTricks.videos, {
+                                'attr': {'class': 'form-control'}
+                            }) }}
+                        </div>
+                    </div>
+                    <div class="col-12 border rounded px-1 py-1 mb-2">
+                        <h6 class="text-muted title-file">Sélection d'une/des image(s) : </h6>
+                        {% if photos is not empty %}
+                            <div class="row flex-row flew-nowrap" style="overflow:auto;">
+                                {% for photo in photos %}
+                                    <div class="col-3">
+                                        <div class="card me-2 border-0">
+                                            <a href="{{ path('edit_figure', {id: figure.id}) }}" class="btn"
+                                               type="button" data-bs-toggle="modal" data-bs-target="#modalPhoto-{{ photo.id }}">
+                                                <img src="{{ asset('uploads/') }}{{ photo.name }}" class="card-img-top" alt="..." width="100%">
+                                            </a>
+                                            <!-- modal -->
+                                            <div class="modal fade" id="modalPhoto-{{ photo.id }}"
+                                                 data-bs-backdrop="static"
+                                                 data-bs-keyboard="false"
+                                                 tabindex="-1"
+                                                 aria-labelledby="staticBackdropLabel"
+                                                 aria-hidden="true"
+                                            >
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <a href="{{ path('delete_image', { id:photo.id }) }}" class="btn btn-url btn-sm py-0 px-0
+                                                                    float-end"
+                                                               onclick="return confirm('Es-tu sûr de vouloir supprimer \'{{ photo.name }}\' ? ')">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+
+                                                            <img src="{{ asset('uploads/') }}{{ photo.name }}" width="100%">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {{ form_widget(formTricks.photos, {
+                            'attr': {'class': 'form-control'}
+                        }) }}
+                    </div>
                     {{ form_widget(formTricks.description, {
                         'attr': {'cols': '100', 'rows': '10', 'class': 'form-control mb-1' }
                     })  }}
-                    <div class="mb-2 border rounded px-1 py-1">
-                        <h6 class="text-muted title-file">Sélection de l'/des image(s) : </h6>
-                        <div class="row">
-                            <div class="col-4">
-                                {{ form_widget(formTricks.images, {
-                                    'attr': {'class': 'form-control'}
-                                }) }}
-                            </div>
-                            <div class="col-4">
-                                {{ form_widget(formTricks.images2, {
-                                    'attr': {'class': 'form-control'}
-                                }) }}
-                            </div>
-                            <div class="col-4">
-                                {{ form_widget(formTricks.images3, {
-                                    'attr': {'class': 'form-control'}
-                                }) }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-2 border rounded px-1 py-1">
-                        <h6 class="text-muted title-file">Sélection de la/des vidéo(s) : </h6>
-                        <div class="row">
-                            <div class="col-4">
-                                {{ form_widget(formTricks.videos, {
-                                    'attr': {'class': 'form-control'}
-                                }) }}
-                            </div>
-                            <div class="col-4">
-                                {{ form_widget(formTricks.videos2, {
-                                    'attr': {'class': 'form-control'}
-                                }) }}
-                            </div>
-                            <div class="col-4">
-                                {{ form_widget(formTricks.videos3, {
-                                    'attr': {'class': 'form-control'}
-                                }) }}
-                            </div>
-                        </div>
-                    </div>
 
+                    {{ form_widget(formTricks.groupe, {
+                        'attr' : {'class': 'form-control mb-2'}
+                    }) }}
                     <input type="submit" name="newTricks" value="Enregistrer" class="btn btn-primary col-12 mb-3">
                 {{ form_end(formTricks) }}
             </div>
-
-            <div class="row">
-                <div class="col">
-                    {% for message in app.flashes('success') %}
-                        <div class="alert alert-success float-end">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-
         </div>
     </div>
-<script>
-    function addImages() {
-        var field = '<input type="file" name="tricks_form[images]" accept="image/jpeg, image/png" class="mb-1">';
-        document.getElementById('cibleImage').innerHTML += field;
-    }
-    function addVideos() {
-        var field = '<input type="file" name="photo" accept="video/*" class="mb-1">';
-        document.getElementById('cibleVideo').innerHTML += field;
-    }
-</script>
 {% endblock %}

@@ -1,0 +1,58 @@
+<div class="row mx-auto card border-0">
+    <h3>Liste des commentaires</h3>
+    <div class="col-12">
+        {% for comment in trick.commentaires %}
+            {% if comment.parent == null %}
+                <div class="card">
+                    <div class="card-header">
+                    {{ comment.userId.email }}
+                </div>
+                    <div class="card-body">
+                    {{ comment.commentaire }}
+                </div>
+                    <div class="card-footer">
+                        <i class="fa fa-calendar"></i>
+                        {{ comment.ajouteLe|date('d/m/Y') }}
+                        <br>
+                        <a href="#add-comment" class="btn btn-secondary mt-2 mb-2"
+                           type="button" data-reply
+                           data-id="{{ comment.id }}">
+                            Répondre
+                        </a>
+                        <hr>
+                        <div style="overflow: auto">
+                            {% for reply in comment.replies %}
+                                <div class="card">
+                                    <div class="card-header">
+                                        {{ reply.userId.email }}
+                                    </div>
+                                    <div class="card-body">
+                                        {{ reply.commentaire }}
+                                    </div>
+                                    <div class="card-footer">
+                                        <i class="fa fa-calendar"></i>
+                                        {{ reply.ajouteLe|date('d/m/Y') }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    $(function() {
+        // on met un ecouteur dévènemet sur tous les boutons répondre
+        document.querySelectorAll("[data-reply]").forEach(
+            element => {
+                element.addEventListener("click", function(){
+                    var element = document.getElementById("commentaire_parentId")
+                    element.value = $(this).data('id')
+                })
+            }
+        )
+    })
+</script>

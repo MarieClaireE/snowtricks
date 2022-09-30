@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    <style>
+        .block-header {
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .section {
+            margin-top: 110px;
+            padding-top: 100px;
+        }
+        body {
+            background-color: whitesmoke;
+        }
+        section {
+            background-color: white;
+            box-shadow: 3px 3px 10px gray;
+        }
+    </style>
+            <section class="col-9 mx-auto mb-1 section border rounded py-1">
+                {% if isConnect %}
+                    <div class="float-end">
+                        <a class="btn btn-url btn-sm py-0 px-0"
+                           href="{{ path('edit_figure', {id:trick.id}) }}">
+                            <i class="fa fa-pen"></i>
+                        </a>
+                        <a href="{{ path('figure_remove',  {id:trick.id}) }}" class="btn btn-url btn-sm py-0 px-0"
+                           onclick="return confirm('Es-tu sûr de vouloir supprimer \'{{ trick.name }}\' ? ')">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-5 mx-auto">
+                        <div class="row">
+                            {% if trick.photoPresentation is not null %}
+                                <img src="{{ asset('uploads/') }}{{ trick.photoPresentation }}" width="100%">
+                            {% else %}
+                                {% if photos is not empty %}
+                                    {% for photo in photos %}
+                                        {% if loop.index == 1 %}
+                                            <img src="{{ asset('uploads/') }}{{ photo.name }}" width="100%">
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+                <h4 class="block-header text-center">
+                    {{ trick.name|capitalize }}
+                </h4>
+            </section>
+{% endblock %}
+{% block body %}
+    <section class="col-9 mx-auto mb-2 border rounded px-2 py-2">
+        <div class="row flex-row flex-nowrap" style="overflow: auto;">
+            {% for photo in photos %}
+                <div class="col-3">
+                    <div class="card me-2 border-0">
+                        <a href="{{ path('trick', {trickId: trick.id, trickslug: trick.slug}) }}" class="btn" type="button" data-bs-toggle="modal"
+                           data-bs-target="#modalPhoto-{{ photo.id }}">
+                            <img src="{{ asset('uploads/') }}{{ photo.name }}" class="card-img-top" alt="..." width="60%">
+                        </a>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalPhoto-{{ photo.id }}"
+                             data-bs-backdrop="static"
+                             data-bs-keyboard="false"
+                             tabindex="-1"
+                             aria-labelledby="staticBackdropLabel"
+                             aria-hidden="true"
+                        >
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                       <img src="{{ asset('uploads/') }}{{ photo.name }}" width="90%">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% for video in videos %}
+                <div class="col-3">
+                    <div class="card me-2 border-0">
+                        <a href="{{ path('trick', {trickId: trick.id, trickslug: trick.slug}) }}" class="btn" type="button" data-bs-toggle="modal"
+                           data-bs-target="#modalVideo-{{ video.id }}">
+                            <video controls width="200px" height="120px">
+                                <source src="{{ asset('uploads/') }}{{ video.name }}">
+                            </video>
+                        </a>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalVideo-{{ video.id }}"
+                             data-bs-backdrop="static"
+                             data-bs-keyboard="false"
+                             tabindex="-1"
+                             aria-labelledby="staticBackdropLabel"
+                             aria-hidden="true"
+                        >
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <video controls width="450px" height="250px">
+                                            <source src="{{ asset('uploads/') }}{{ video.name }}">
+                                        </video>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="p mt-3 ">
+            {{ trick.description|nl2br }}
+        </div>
+        <hr class="col-9 mx-auto mt-2 mb-2">
+        <div class="col-5 mx-auto">
+            <div class="row flex-row mb-2">
+                {% for groupe in groupes %}
+                    <span class="badge bg-secondary col mx-auto me-2">
+                        {{ groupe }}
+                    </span>
+                {% endfor %}
+                <span class="badge bg-secondary col mx-auto me-2">
+                    Ajouté le : {{ trick.ajouteLe|date('d/m/Y') }}
+                </span>
+
+                {% if trick.modifieLe is not null %}
+                    <span class="badge bg-secondary col mx-auto">
+                        Modifié le : {{ trick.modifieLe|date('d/m/Y')  }}
+                    </span>
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+    <section class="col-9 mx-auto border rounded px-2 py-2 mb-2">
+        <div class="row">
+            <div class="col me-4">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success float-end me-4">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% include "espace_comm/add_comment.html.twig" %}
+    </section>
+    <section class="col-9 mx-auto border rounded px-2 py-2 mb-2"
+    style="max-height: 400px; overflow-y:auto;">
+        {% include "espace_comm/list_comment.html.twig" %}
+    </section>
+{% endblock %}
