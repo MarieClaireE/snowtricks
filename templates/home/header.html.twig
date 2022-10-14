@@ -1,8 +1,8 @@
 <style>
     .image-bg{
-        background-image: url({{ asset('assets/assets/img/lace-sport-wood-smiling-fun.jpg') }});
+        background-image: url({{ asset('assets/assets/img/montagne.jpg') }});
         display: block;
-        margin: 0px auto;
+        margin: auto;
         height: 980px;
     }
     .arrow-down {
@@ -15,6 +15,7 @@
         font-size: 40px;
         width: 60px;
         font-weight: bold;
+        margin-left: 1400px;
     }
     .arrow-down:hover{
         color: white;
@@ -32,44 +33,48 @@
         font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     }
 
-    @media (max-height: 700px){
+    @media (max-height: 900px){
         .image-bg{
-            height: 625px;
-            margin-top: 10px;
+            height: 750px;
             background-position: center;
         }
         .arrow-down {
-            margin-top: 70px;
+            margin-left: 430px;
         }
     }
-    @media (max-width: 420px) {
+    @media (max-width: 500px) {
         .image-bg{
-            height: 750px;
+            height: 675px;
             background-position: center center;
         }
         .arrow-down {
-            margin-top: 5px;
+            margin-left: 200px;
         }
         .h3-title {
+            margin-top: 100px;
             font-size:40px;
         }
         .text-title {
             font-size:20px;
+            margin-bottom: 20px;
         }
     }
 
 </style>
 <header class="masthead bg-primary text-center text-white image-bg" id="home">
-    <div class="container d-flex align-items-center flex-column col-4 py-5">
+    <div class="container d-flex align-items-center flex-column col-12 py-5">
         <!-- Masthead Subheading-->
         <h3 class="h3-title">
             SnowTricks
+            <br>
+            <span class="text-title">
+                Le snowboard sous toutes ses formes.
+            </span>
         </h3>
-        <p class="masthead-subheading mb-0 text-title">
-            Le snowboard sous toutes ses formes.
-        </p>
+        <div class="col-12">
+            <a class="arrow-down" href="#tricks">
+                <i class="fa-solid fa-arrow-down"></i>
+            </a>
+        </div>
     </div>
-    <a class="float-end arrow-down" href="#tricks">
-        <i class="fa-solid fa-arrow-down"></i>
-    </a>
 </header>

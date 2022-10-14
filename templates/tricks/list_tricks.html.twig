@@ -1,18 +1,6 @@
 
 {% block section %}
     <style>
-        .hidden{
-            display: none;
-        }
-        .active{
-            display: block;
-        }
-        ul {
-            column-count: 4;
-        }
-        li {
-            display: inline;
-        }
         .div-figure{
             max-height: 230px;
             min-height: 200px;
@@ -20,6 +8,20 @@
         .div-button{
             position: center;
             bottom: 5px;
+        }
+        .card-header {
+            height: 100px;
+        }
+        .img {
+            display:block;
+            margin: auto;
+            width: 60%;
+        }
+
+        @media (max-width: 500px) {
+            .img {
+                width: 40%;
+            }
         }
     </style>
     <!-- Portfolio Section-->
@@ -48,23 +50,23 @@
        <div class="row mt-4">
            <hr class="col-10 mx-auto" id="top">
            <div class="col-10 mx-auto " >
-               <div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-1 mb-2" id="listTricks">
+               <div class="row row-cols-1 row-cols-lg-5 g-3 g-lg-1 mb-2" id="listTricks">
                    {% for trick in tricks %}
-                        {% set hidden = loop.index > 4 ? 'hidden' : 'active' %}
+                        {% set hidden = loop.index > 5 ? 'hidden' : 'active' %}
                        <div class="mini-container col {{ hidden }}">
                            <div class="card p-3  mb-1 div-figure">
                                <div class="card-header bg-white">
                                 {% if trick.photoPresentation is not null %}
                                     <img src="{{ asset('uploads/') }}{{ trick.photoPresentation }}" width="50%"
-                                    style="display:block; margin:0px auto;">
+                                    class="img" alt="...">
                                 {% else %}
                                     {% if photos is not empty %}
                                         {% for key, photo in photos %}
                                             {% for name in photo %}
                                                 {% if key == trick.id %}
                                                     {% if loop.index == 1 %}
-                                                        <img src="{{ asset('uploads/') }}{{ name }}" width="60%"
-                                                         style="display:block; margin:0px auto;">
+                                                        <img class="img" src="{{ asset('uploads/') }}{{ name }}"
+                                                         alt="...">
                                                     {% endif %}
                                                 {% endif %}
                                             {% endfor %}
@@ -87,7 +89,7 @@
                                    {% endif %}
                                     <div class="div-button">
                                        <p class="mt-2 mb-0">
-                                           <a class="btn btn-url btn-sm btn-outline-primary"
+                                           <a class=" btn-url btn-sm btn-outline-primary"
                                               href="{{ path('trick', {trickId: trick.id, trickslug: trick.slug}) }}">
                                                {{ trick.name }}
                                            </a>
@@ -99,9 +101,9 @@
                    {% endfor %}
                </div>
                <div class="row">
-                       <a href="#moreButton" id="moreButton" class="btn btn-dark rounded-pill col-1 mx-auto" onclick="showMore()">
-                           <i class="fa fa-plus"></i>
-                       </a>
+                   <a href="#moreButton" id="moreButton" class="btn btn-dark rounded-pill px-1 col-1 mx-auto" onclick="showMore()">
+                       <i class="fa fa-plus"></i>
+                   </a>
                </div>
 
            </div>
@@ -114,12 +116,12 @@
             </div>
        </div>
     </section>
-    <script langage="JavaScript" class="text/javascript">
+    <script class="text/javascript">
 
             function showMore() {
                 var listTricks =
                 Array.prototype.slice.call(document.querySelectorAll(
-                        '#listTricks .mini-container:not(.active)')).slice(0,4);
+                        '#listTricks .mini-container:not(.active)')).slice(0,5);
 
                 for (var i=0; i < listTricks.length; i++) {
                     listTricks[i].className = 'active';
@@ -132,7 +134,7 @@
                 var hiddenElements = Array.prototype.slice.call(
                     document.querySelectorAll(
                         '#listTricks .mini-container:not(.active)'));
-                if(hiddenElements.length == 0) {
+                if(hiddenElements.length === 0) {
                     document.getElementById('moreButton').style.display = 'none';
                 } else {
                     document.getElementById('moreButton').style.display = 'block';

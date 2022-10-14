@@ -27,7 +27,9 @@
                     <div class="row">
                         <div class="col-5 mx-auto">
                             <div class="row">
-                                <img src="{{ asset('uploads/') }}{{ figure.photoPresentation }}" width="100%">
+                                {% if figure.photoPresentation is not null %}
+                                    <img src="{{ asset('uploads/') }}{{ figure.photoPresentation }}" width="100%" alt="...">
+                                {% endif %}
                                 {{ form_widget(formTricks.photoPresentation, {
                                     'attr': {'class': 'form-control'}
                                 }) }}
@@ -117,7 +119,7 @@
                                                                 <i class="fa fa-trash"></i>
                                                             </a>
 
-                                                            <img src="{{ asset('uploads/') }}{{ photo.name }}" width="100%">
+                                                            <img src="{{ asset('uploads/') }}{{ photo.name }}" width="100%" alt="...">
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
