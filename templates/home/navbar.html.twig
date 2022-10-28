@@ -13,7 +13,8 @@
                 <li class="nav-item mx-0 mx-lg-1">
                     <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('accueil') }}#tricks">Figures</a>
                 </li>
-                {% if isConnect == null %}
+
+                {% if isConnect is defined and isConnect == null %}
                     <li class="nav-item mx-0 mx-lg-1">
                         <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_login') }}" >Se connecter</a>
                     </li>
@@ -21,7 +22,7 @@
                         <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_register') }}">S'inscrire</a>
                     </li>
                 {% endif %}
-                {% if isConnect %}
+                {% if isConnect is defined and isConnect %}
                     <li class="nav-item mx-0 mx-lg-1">
                         <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_logout') }}">Déconnexion</a>
                     </li>
