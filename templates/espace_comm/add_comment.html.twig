@@ -1,0 +1,11 @@
+{% if isConnect %}
+    <div class="row mx-auto card border-0 " id="add-comment">
+        <h3>Ajouter un commentaire</h3>
+        {{ form_start(form) }}
+            {{ form(form) }}
+        {{ form_end(form) }}
+    </div>
+{% else %}
+    <a href="{{  path('app_login') }}">Connectez-vous</a> ou <a href="{{ path('app_register') }}">inscrivez-vous</a>
+    pour laisser un commentaire.
+{% endif %}

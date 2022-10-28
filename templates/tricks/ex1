@@ -1,0 +1,66 @@
+<div class="row multimedia">
+            {% for photo in photos %}
+                <div class="col-10 col-3">
+                    <div class="card me-2 border-0">
+                        <a href="{{ path('trick', {trickId: trick.id, trickslug: trick.slug}) }}" class="btn" type="button" data-bs-toggle="modal"
+                           data-bs-target="#modalPhoto-{{ photo.id }}">
+                            <img src="" class="card-img-top" alt="..." width="60%">
+                        </a>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalPhoto-{{ photo.id }}"
+                             data-bs-backdrop="static"
+                             data-bs-keyboard="false"
+                             tabindex="-1"
+                             aria-labelledby="staticBackdropLabel"
+                             aria-hidden="true"
+                        >
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                       <img src="{{ asset('uploads/') }}{{ photo.name }}" width="90%">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% for video in videos %}
+                <div class="col-10 col-3">
+                    <div class="card me-2 border-0">
+                        <a href="{{ path('trick', {trickId: trick.id, trickslug: trick.slug}) }}" class="btn" type="button" data-bs-toggle="modal"
+                           data-bs-target="#modalVideo-{{ video.id }}">
+                            <video controls width="200px" height="120px">
+                                <source src="{{ asset('uploads/') }}{{ video.name }}">
+                            </video>
+                        </a>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalVideo-{{ video.id }}"
+                             data-bs-backdrop="static"
+                             data-bs-keyboard="false"
+                             tabindex="-1"
+                             aria-labelledby="staticBackdropLabel"
+                             aria-hidden="true"
+                        >
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <video controls width="450px" height="250px">
+                                            <source src="{{ asset('uploads/') }}{{ video.name }}">
+                                        </video>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>

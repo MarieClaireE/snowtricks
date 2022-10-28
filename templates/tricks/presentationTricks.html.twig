@@ -1,0 +1,211 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    <style>
+        .block-header {
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .section {
+            margin-top: 110px;
+            padding-top: 100px;
+        }
+        body {
+            background-color: whitesmoke;
+        }
+        section {
+            background-color: white;
+            box-shadow: 3px 3px 10px gray;
+        }
+
+        #showMedia {
+            margin: auto;
+        }
+
+        @media (max-width: 700px) {
+            #showMedia {
+                margin: auto;
+            }
+        }
+    </style>
+            <section class="col-9 mx-auto mb-1 section border rounded py-1">
+                {% if isConnect %}
+                    <div class="float-end">
+                        <a class="btn btn-url btn-sm py-0 px-0"
+                           href="{{ path('edit_figure', {id:trick.id}) }}">
+                            <i class="fa fa-pen"></i>
+                        </a>
+                        <a href="{{ path('figure_remove',  {id:trick.id}) }}" class="btn btn-url btn-sm py-0 px-0"
+                           onclick="return confirm('Es-tu sûr de vouloir supprimer \'{{ trick.name }}\' ? ')">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-5 mx-auto">
+                        <div class="row">
+                            {% if trick.photoPresentation is not null %}
+                                <img src="{{ asset('uploads/') }}{{ trick.photoPresentation }}" width="100%">
+                            {% else %}
+                                {% if photos is not empty %}
+                                    {% for photo in photos %}
+                                        {% if loop.index == 1 %}
+                                            <img src="{{ asset('uploads/') }}{{ photo.name }}" width="100%">
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+                <h4 class="block-header text-center">
+                    {{ trick.name|capitalize }}
+                </h4>
+            </section>
+{% endblock %}
+{% block body %}
+    <section class="col-9 mx-auto mb-2 border rounded px-2 py-2">
+        <div class="row" id="div-media">
+            {% if photos is not empty %}
+                <div class="col-10 col-md-5 mb-3">
+                <div id="carouselImage" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {% set countImage = photos|length %}
+
+                        {% for i in 0..(countImage - 1) %}
+                            <button type="button" data-bs-target="#carouselImage"
+                                    data-bs-slide-to="{{ i }}" class="{% if i == 0 %} active {% endif %}"
+                                    aria-current="true" aria-label="Slide {{ i }}">
+                            </button>
+                        {% endfor %}
+                    </ol>
+                    <div class="carousel-inner">
+                        {% for photo in photos %}
+                            <div class="carousel-item {% if loop.index == 1 %} active {% endif %}" id="slide-{{ loop.index }}">
+                                <img src="{{ asset('uploads/') }}{{ photo.name }}" class="d-block w-50 mx-auto" alt="..." height="250px">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselImage" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselImage" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+            {% if videos is not empty %}
+                <div class="col-10 col-md-5">
+                <div id="carouselVideo" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {% set countVideo = videos|length %}
+
+                        {% for i in 0..(countVideo - 1) %}
+                            <button type="button" data-bs-target="#carouselVideo"
+                                    data-bs-slide-to="{{ i }}" class="{% if i == 0 %} active {% endif %}"
+                                    aria-current="true" aria-label="Slide {{ i }}">
+                            </button>
+                        {% endfor %}
+                    </ol>
+                    <div class="carousel-inner">
+                        {% for video in videos %}
+                            <div class="carousel-item {% if loop.index == 1 %} active {% endif %}" id="slide-{{ loop.index }}">
+                                <video controls width="450px" height="250px">
+                                    <source src="{{ asset('uploads/') }}{{ video.name }}">
+                                </video>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselVideo" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselVideo" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <a href="#div-media" id="showMedia" class="btn btn-dark rounded-pill px-1 col-1 col-5" onclick="showMedia()"></a>
+
+        <div class="p mt-3 ">
+            {{ trick.description|nl2br }}
+        </div>
+        <hr class="col-9 mx-auto mt-2 mb-2">
+        <div class="col-5 mx-auto">
+            <div class="row flex-row mb-2">
+                {% for groupe in groupes %}
+                    <span class="badge bg-secondary col mx-auto me-2 mb-2">
+                        {{ groupe }}
+                    </span>
+                {% endfor %}
+                <span class="badge bg-secondary col mx-auto me-2 mb-2">
+                    Ajouté le : {{ trick.ajouteLe|date('d/m/Y') }}
+                </span>
+
+                {% if trick.modifieLe is not null %}
+                    <span class="badge bg-secondary col mx-auto">
+                        Modifié le : {{ trick.modifieLe|date('d/m/Y')  }}
+                    </span>
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+    <section class="col-9 mx-auto border rounded px-2 py-2 mb-2">
+        <div class="row">
+            <div class="col me-4">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success float-end me-4">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% include "espace_comm/add_comment.html.twig" %}
+    </section>
+    <section class="col-9 mx-auto border rounded px-2 py-2 mb-2"
+    style="max-height: 400px; overflow-y:auto;">
+        {% include "espace_comm/list_comment.html.twig" %}
+    </section>
+    <script>
+        $(function() {
+            let btn = $('body #showMedia')
+            let widthScreen = screen.width
+
+            if(widthScreen < 700 ) {
+                document.getElementById('showMedia').style.display = 'block';
+                btn.html('Voir les médias')
+                document.getElementById('div-media').style.display = 'none';
+            } else {
+                document.getElementById('showMedia').style.display = 'none';
+            }
+        })
+
+        function showMedia() {
+            $('body #showMedia').on('click', function() {
+                document.getElementById('div-media').style.display = 'block';
+                $('body #showMedia').html('Cacher les médias')
+
+                document.getElementById('showMedia').value = 'hide'
+            })
+            if(document.getElementById('showMedia').value === 'hide') {
+                $('body #showMedia').on('click', function() {
+                    document.getElementById('div-media').style.display = 'none';
+                    $('body #showMedia').html('Voir les médias')
+                    document.getElementById('showMedia').value = 'show'
+                })
+            }
+        }
+
+        onload = function() {
+            showMedia()
+        }
+    </script>
+{% endblock %}

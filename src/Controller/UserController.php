@@ -10,22 +10,5 @@ use Twig\Environment;
 
 class UserController extends AbstractController
 {
-    /**
-     * @var Environment
-     */
-    private $twig;
 
-    public function __construct(Environment $twig)
-    {
-        $this->twig = $twig;
-    }
-
-
-    /**
-     * @Route("/account/", name="account")
-     */
-    public function homepage(): Response
-    {
-       return new Response($this->twig->render('account/homePage.html.twig'));
-    }
 }
