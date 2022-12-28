@@ -253,9 +253,12 @@ class FigureController extends AbstractController
 			}
 
 
+			$commentRepo = $this->em->getRepository(Commentaires::class);
+			$commentaires = $commentRepo->findbyFigure($trick);
 
 			return new Response($this->twig->render('tricks/presentationTricks.html.twig', [
 				'isConnect' =>$isConnect,
+				'commentaires' => $commentaires,
 				'trick' => $trick,
 				'groupes' => $groupes,
 				'photos' => $photos,

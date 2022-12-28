@@ -1,27 +1,45 @@
+<style>
+    #load-more {
+        width: calc((100% / 3) - 8px);
+        padding: 16px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: all 200ms ease-in-out;
+        border-radius: 3px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.15rem;
+    }
+</style>
 <div class="row mx-auto card border-0">
-    <h3>Liste des commentaires</h3>
-    <div class="col-12">
-        {% for comment in trick.commentaires %}
-            {% if comment.parent == null %}
-                <div class="card">
+    <h3 class="text-center fs-4">Commentaires</h3>
+
+    <div id="comment-container">
+        {% for comment in commentaires %}
+            {% if comment.parent is null %}
+                {% set hidden = loop.index > 10 ? 'd-none' : 'd-block' %}
+                <div class="mb-2 card card-comment {{ hidden }}">
                     <div class="card-header">
-                    {{ comment.userId.email }}
-                </div>
+                        <i class="fa fa-user"></i> {{ comment.userId.email }}
+                    </div>
                     <div class="card-body">
-                    {{ comment.commentaire }}
-                </div>
+                        {{ comment.commentaire }}
+                    </div>
                     <div class="card-footer">
-                        <i class="fa fa-calendar"></i>
-                        {{ comment.ajouteLe|date('d/m/Y') }}
+                        <span class="fs-6 text-muted">
+                            <i class="fa fa-calendar"></i>
+                            {{ comment.ajouteLe|date('d/m/Y') }}
+                        </span>
                         <br>
                         <a href="#add-comment" class="btn btn-secondary mt-2 mb-2"
                            type="button" data-reply
                            data-id="{{ comment.id }}">
                             Répondre
                         </a>
-                        <hr>
-                        <div style="overflow: auto">
+                        <span style="overflow: auto">
                             {% for reply in comment.replies %}
+                                {% if reply is not null %} <hr> {% endif %}
                                 <div class="card">
                                     <div class="card-header">
                                         {{ reply.userId.email }}
@@ -35,16 +53,19 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                        </div>
+                        </span>
                     </div>
                 </div>
             {% endif %}
         {% endfor %}
     </div>
+    <div class="card-actions">
+        <button id="load-more" class="bg-secondary" onclick="ShowMore()">Voir plus</button>
+    </div>
 </div>
 
 <script>
-    $(function() {
+    $(function(){
         // on met un ecouteur dévènemet sur tous les boutons répondre
         document.querySelectorAll("[data-reply]").forEach(
             element => {
@@ -53,6 +74,32 @@
                     element.value = $(this).data('id')
                 })
             }
-        )
+        );
     })
+
+    function ShowMore() {
+        const hiddenElement = Array.prototype.slice.call(document.querySelectorAll('.card-comment:not(.d-block)'))
+        console.log(hiddenElement)
+
+        for(var i = 0; hiddenElement.length > i; i++) {
+            hiddenElement[i].className = 'card d-block mb-2 ';
+        }
+
+        switchButton();
+    }
+
+    function switchButton() {
+        var hiddenElements = Array.prototype.slice.call(
+            document.querySelectorAll(
+                '.card-comment:not(.d-block)'));
+        if(hiddenElements.length === 0) {
+            document.getElementById('load-more').style.display = 'none';
+        } else {
+            document.getElementById('load-more').style.display = 'block';
+        }
+
+        onload = function () {
+            showMore();
+        };
+    }
 </script>

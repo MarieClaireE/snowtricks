@@ -26,15 +26,18 @@
     </style>
     <!-- Portfolio Section-->
    <section class="page-section tricks mb-4">
-       <div class="row">
-           <div class="col me-4">
+
+           <div class="row">
                {% for message in app.flashes('success') %}
-                   <div class="alert alert-success float-end me-4">
+                   <div class="alert alert-success">
                        {{ message }}
                    </div>
                {% endfor %}
+               {% for flash in app.flashes('error') %}
+                   <div class="alert alert-danger">{{ flash }}</div>
+               {% endfor %}
            </div>
-       </div>
+
        <div class="row">
            <div class="col-11 mx-auto">
                    <div class="col-2 float-end">
@@ -52,7 +55,7 @@
            <div class="col-10 mx-auto " >
                <div class="row row-cols-1 row-cols-lg-5 g-3 g-lg-1 mb-2" id="listTricks">
                    {% for trick in tricks %}
-                        {% set hidden = loop.index > 5 ? 'hidden' : 'active' %}
+                        {% set hidden = loop.index > 5 ? 'd-none' : 'd-block' %}
                        <div class="mini-container col {{ hidden }}">
                            <div class="card p-3  mb-1 div-figure">
                                <div class="card-header bg-white">
@@ -121,7 +124,7 @@
             function showMore() {
                 var listTricks =
                 Array.prototype.slice.call(document.querySelectorAll(
-                        '#listTricks .mini-container:not(.active)')).slice(0,5);
+                        '#listTricks .mini-container:not(.d-block)')).slice(0,5);
 
                 for (var i=0; i < listTricks.length; i++) {
                     listTricks[i].className = 'active';
@@ -133,16 +136,12 @@
             function switchButton() {
                 var hiddenElements = Array.prototype.slice.call(
                     document.querySelectorAll(
-                        '#listTricks .mini-container:not(.active)'));
+                        '#listTricks .mini-container:not(.d-block)'));
                 if(hiddenElements.length === 0) {
                     document.getElementById('moreButton').style.display = 'none';
                 } else {
                     document.getElementById('moreButton').style.display = 'block';
                 }
-
-                var activeElements = Array.prototype.slice.call(document.querySelectorAll(
-                    '#listTricks .mini-container:not(.hidden)'
-                ));
 
                 onload = function () {
                     showMore();
